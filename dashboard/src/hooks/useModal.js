@@ -12,7 +12,7 @@ export default function useModal () {
   }
 
   function listen (fn) {
-    bus.listen(EVENT_NAME, fn)
+    bus.on(EVENT_NAME, fn)
   }
 
   function off (fn) {
