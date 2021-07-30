@@ -33,19 +33,33 @@
 <script>
 import { reactive } from '@vue/reactivity'
 import useModal from '../../hooks/useModal'
+import { useField } from 'vee-validate'
+import { validateEmptyAndMinLength3, validateEmptyAndEmail } from '../../utils/validators'
+import services from '../../services/index'
+
 export default {
   setup () {
     const modal = useModal()
+    const {
+      value: emailValue,
+      errorMessage: emailErrorMessage
+    } = useField('email', validateEmptyAndEmail)
+
+    const {
+      value: passwordValue,
+      errorMessage: passwordErrorMessage
+    } = useField('password', validateEmptyAndMinLength3)
+
     const state = reactive({
       hasErrors: false,
       isLoading: false,
       email: {
-        value: '',
-        errorMessage: ''
+        value: emailValue,
+        errorMessage: emailErrorMessage
       },
       password: {
-        value: '',
-        errorMessage: ''
+        value: passwordValue,
+        errorMessage: passwordErrorMessage
       }
     })
 
@@ -53,7 +67,19 @@ export default {
       modal.close()
     }
 
-    function handleSubmit () {}
+    async function handleSubmit () {
+      try {
+        state.isLoading = true
+        const { data, errors } = await services.auth.auth({ email: state.email.value, emails: state.password.value })
+        if (!errors) {
+          window.localStorage.setItem('token', data.token)
+          return
+        }
+      } catch (error) {
+        state.isLoading = false
+        state.hasErrors = !!error
+      }
+    }
 
     return { state, close, handleSubmit }
   }
