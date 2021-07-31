@@ -20,7 +20,14 @@
       <p class="mt-10 text-lg text-gray-800 font-regular">
         Este aqui é a sua chave de api
       </p>
+      <content-loader
+        v-if="store.Global.isLoading || state.isLoading"
+        class="rounded"
+        width="600px"
+        height="50px"
+      />
        <div
+        v-else
         class="flex py-3 pl-5 mt-2 rounded justify-between items-center bg-brand-gray w-full lg:w-1/2"
       >
         <span id="apikey">{{ store.User.currentUser.apiKey }}</span>
@@ -43,7 +50,14 @@
       <p class="mt-5 text-lg text-gray-800 font-regular">
         Coloque o script abaixo no seu site para começar a receber feedbacks
       </p>
+      <content-loader
+        v-if="store.Global.isLoading || state.isLoading"
+        class="rounded"
+        width="600px"
+        height="50px"
+      />
       <div
+        v-else
         class="py-3 pl-5 pr-20 mt-2 rounded bg-brand-gray w-full lg:w-2/3 overflow-x-scroll"
       >
         <pre>&lt;script defer async onload="init('{{store.User.currentUser.apiKey}}')" src="https://igorhalfeld-feedbacker-widget.netlify.app/init.js" &gt;&lt;/script&gt;</pre>
@@ -56,15 +70,19 @@
 <script>
 import HeaderLogged from '../../components/HeaderLogged'
 import Icon from '../../components/Icon'
+import ContentLoader from '../../components/ContentLoader'
 import useStore from '../../hooks/useStore'
 import pallete from '../../../pallete'
+import { reactive } from '@vue/reactivity'
 
 export default {
-  components: { HeaderLogged, Icon },
+  components: { HeaderLogged, Icon, ContentLoader },
   setup () {
     const store = useStore()
-
-    return { store, brandColors: pallete.brand }
+    const state = reactive({
+      isLoading: false
+    })
+    return { store, brandColors: pallete.brand, state }
   }
 }
 </script>
