@@ -83,10 +83,12 @@ export default {
       try {
         toast.clear()
         state.isLoading = true
-        const { data, errors } = await services.auth.login({ email: state.email.value, emails: state.password.value })
+        const { data, errors } = await services.auth.login({ email: state.email.value, password: state.password.value })
         if (!errors) {
           window.localStorage.setItem('token', data.token)
           router.push({ name: 'Feedbacks' })
+          state.isLoading = false
+          modal.close()
           return
         }
 
@@ -104,6 +106,7 @@ export default {
 
         state.isLoading = false
       } catch (error) {
+        console.log(error)
         state.isLoading = false
         state.hasErrors = !!error
         toast.error('Ocorreu um erro ao fazer login')
