@@ -6,7 +6,18 @@ const API_ENVS = {
   production: ''
 }
 
-const httpClient = axios.create(API_ENVS.local)
+const httpClient = axios.create({ baseURL: API_ENVS.local })
+
+// interceptor para propragar erros trataveis pela aplicacao
+httpClient.interceptors.request.use(response => response, error => {
+  const canThrowError = error.request.status === 0 || error.request.status === 500
+
+  if (canThrowError) {
+    throw new Error(error.message)
+  }
+
+  return error
+})
 
 export default {
   auth: AuthService(httpClient)

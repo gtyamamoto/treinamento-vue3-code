@@ -1,5 +1,5 @@
 <template>
-  <h1>Aqui é a Home</h1>
+  <h1>Aqui é o Feedbacks</h1>
 </template>
 
 <script>

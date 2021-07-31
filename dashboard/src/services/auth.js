@@ -1,5 +1,5 @@
 export default httpClient => ({
-  auth: async ({ email, password }) => {
+  login: async ({ email, password }) => {
     const response = httpClient.post('/auth/login', { email, password })
     let errors = null
 
