@@ -24,7 +24,10 @@
         class="block w-full px-4 py-3 text-lg border-transparent border-2 rounded"
         >
         <span class="block font-medium text-brand-danger" v-if="state.password.errorMessage"> {{ state.password.errorMessage }} </span>
-        <button type="submit" class="px-8 py-3 mt-10 text-2xl text-white rounded-full bg-brand-main focus:outline-none" :disabled="state.isLoading">Entrar</button>
+        <button type="submit" class="px-8 py-3 mt-10 text-2xl text-white rounded-full bg-brand-main focus:outline-none" :disabled="state.isLoading">
+          <icon name="loading" v-if="state.isLoading" class="animate-spin" />
+          <span v-else>Entrar</span>
+        </button>
       </label>
     </form>
   </div>
@@ -38,8 +41,13 @@ import { useField } from 'vee-validate'
 import { useToast } from 'vue-toastification'
 import { validateEmptyAndMinLength3, validateEmptyAndEmail } from '../../utils/validators'
 import services from '../../services/index'
+import Icon from '../Icon'
 
 export default {
+
+  components: {
+    Icon
+  },
   setup () {
     const modal = useModal()
     const router = useRouter()
