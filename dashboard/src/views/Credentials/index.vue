@@ -102,7 +102,7 @@ export default {
       isLoading: false
     })
     watch(() => store.User.currentUser, () => {
-      if (!store.Global.isLoading && !store.User.currentUser.apiKey) {
+      if (!store.Global.isLoading && (!store.User.currentUser || !store.User.currentUser.apiKey)) {
         handleError(true)
       }
     })
