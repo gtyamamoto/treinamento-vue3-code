@@ -33,33 +33,33 @@
       </div>
       <div class="px-10 pt-20 col-span-3">
         <p
-          v-if="state.hasError"
+          v-if="hasError"
           class="text-lg text-center text-gray-800 font-regular">
           Aconteceu um erro ao carregar os feedbacks 🥺
         </p>
         <p
-          v-if="!state.feedbacks.length && !state.isLoading && !state.isLoadingFeedbacks && !state.hasError"
+          v-if="!feedbacks.length && !isLoading && !isLoadingFeedbacks && !hasError"
           class="text-lg text-center text-gray-800 font-regular">
           Ainda nenhum feedback recebido 🤓
         </p>
 
-        <feedback-card-loading v-if="state.isLoading || state.isLoadingFeedbacks" />
+        <feedback-card-loading v-if="isLoading || isLoadingFeedbacks" />
         <feedback-card
           v-else
-          v-for="(feedback, index) in state.feedbacks"
+          v-for="(feedback, index) in feedbacks"
           :key="feedback.id"
           :is-opened="index === 0"
           :feedback="feedback"
           class="mb-8"
         />
-        <feedback-card-loading v-if="state.isLoadingMoreFeedbacks" />
+        <feedback-card-loading v-if="isLoadingMoreFeedbacks" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { reactive, onMounted, onUnmounted, onErrorCaptured } from 'vue'
+import { reactive, onMounted, onUnmounted, onErrorCaptured, toRefs } from 'vue'
 import Filters from './Filters'
 import FiltersLoading from './FiltersLoading'
 import HeaderLogged from '../../components/HeaderLogged'
@@ -158,7 +158,7 @@ export default {
       }
     }
     return {
-      state,
+      ...toRefs(state),
       changeFeedbacksType
     }
   }
